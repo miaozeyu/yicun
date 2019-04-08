@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import or_
+from sqlalchemy import and_
 
 import datetime
 
@@ -66,13 +67,22 @@ class DataProviderService:
         :return: The posting or postings ordered by date
         """
         all_postings = []
-        if id is None and job_title == "" and city == "" and technologies == "":
-            all_postings = self.session.query(Posting).order_by(Posting.date).all()
+
+        if id:
+            all_postings = self.session.query(Posting).filter(Posting.id==id).all()
         else:
-            all_postings = self.session.query(Posting).filter(or_(Posting.id == id,
-                                                                  Posting.job_title.like('%{}%'.format(job_title)),
-                                                                  Posting.city.like('%{}%'.format(city)),
-                                                                  Posting.technologies.like('%{}%'.format(technologies)))).all()
+            if id is None and job_title == "" and city == "" and technologies == "":
+                all_postings = self.session.query(Posting).order_by(Posting.date).all()
+            else:
+                all_postings = self.session.query(Posting).filter(and_(Posting.job_title.like('%{}%'.format(job_title)),
+                                                                     )).all()
+
+        # or_(Posting.id == id,
+        #     Posting.job_title.like('%{}%'.format(job_title)),
+        #     Posting.city.like('%{}%'.format(city)),
+        #     Posting.technologies.like('%{}%'.format(technologies)))
+
+
         if serialize:
             return [posting.serialize() for posting in all_postings]
         else:
