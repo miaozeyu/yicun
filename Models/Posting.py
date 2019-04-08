@@ -28,7 +28,7 @@ class Posting(Model):
 #
     def serialize(self):
         return {
-            "date": self.date,
+            "date": self.date.isoformat() if self.date else "",
             "job_title": self.job_title,
             "company": self.company,
             "city": self.city,
