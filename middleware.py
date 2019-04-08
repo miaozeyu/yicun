@@ -17,13 +17,19 @@ DATA_PROVIDER = DataProviderService(db_engine)
 PAGE_SIZE = 2
 
 def posting(serialize=True):
-    postings = DATA_PROVIDER.get_posting(serialize=serialize)
+    job_title = request.args.get("job_title")
+    if job_title:
+        postings = DATA_PROVIDER.get_posting(serialize=serialize, job_title=job_title)
+    else:
+        postings = DATA_PROVIDER.get_posting(serialize=serialize)
     # page starts at 1
     page = request.args.get("page")
+
 
     if page:
         nr_of_pages = int(ceil(float(len(postings)) / PAGE_SIZE))
         converted_page = int(page)
+
         if converted_page > nr_of_pages or converted_page <= 0:
             return make_response("", 404)
 
