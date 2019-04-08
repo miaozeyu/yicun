@@ -34,10 +34,8 @@ def posting(serialize=True):
 
     if serialize:
         data = {"postings": postings, "total": len(postings)}
-        json_data = json.dumps(data)
         response = make_response(jsonify(data), 200)
-        response.headers["ETag"] = str(hashlib.sha256(json_data.encode('utf-8')).hexdigest())
-        response.headers["Cache-Control"] = "private, max - age=300"
+
         return response
     else:
         return postings
