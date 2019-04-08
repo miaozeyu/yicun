@@ -1,6 +1,3 @@
-from Posting import Posting
-from InitDB import init_database
-
 __all__ = ["Posting", "init_database"]
 
 import os, sys, inspect
@@ -16,4 +13,6 @@ cmd_subfolder = os.path.realpath(
 if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
 
+from Posting import Posting
+from InitDB import init_database
 

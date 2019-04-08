@@ -8,7 +8,7 @@
 # Company
 # Links
 
-from Model import Model
+from Models.Model import Model
 from sqlalchemy import Column, String, Date, Integer
 
 class Posting(Model):

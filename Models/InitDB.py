@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from Model import Model
+from Models.Model import Model
 
 def init_database(engine):
     db_engine = create_engine(engine, echo=True)
