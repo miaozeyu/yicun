@@ -78,3 +78,36 @@ class DataProviderService:
         else:
             return all_postings
 
+
+    def fill_database(self):
+        #
+        # Postings
+        #
+        post1 = Posting(date=datetime.datetime.today(),
+                        job_title="Data Engineer",
+                        company="Company X",
+                        city="New York",
+                        technologies="Flask, Python",
+                        job_type="Full-time",
+                        links="xxx")
+
+        post2 = Posting(date=datetime.datetime.today(),
+                        job_title="Software Engineer",
+                        company="Company Y",
+                        city="New York",
+                        technologies="Python, SQL",
+                        job_type="Full-time",
+                        links="xxx")
+
+        post3 = Posting(date=datetime.datetime.today(),
+                        job_title="Data Scientist",
+                        company="Company Z",
+                        city="New York",
+                        technologies="Python, pandas, Spark",
+                        job_type="Full-time",
+                        links="xxx")
+
+        self.session.add(post1)
+        self.session.add(post2)
+        self.session.add(post3)
+        self.session.commit()
