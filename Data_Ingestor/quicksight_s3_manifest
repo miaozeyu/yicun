@@ -1,0 +1,13 @@
+{
+    "fileLocations": [
+        {
+            "URIPrefixes": [
+                "https://s3.amazonaws.com/joemiao-twitter-stream-data/data/2019/04/09/20"
+            ]
+        }
+    ],
+    "globalUploadSettings": {
+        "format": "JSON",
+        "delimiter": "\n"
+    }
+}
