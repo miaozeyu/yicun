@@ -3,3 +3,4 @@
 **/.idea/tasks.xml
 **/Data_Ingestor/keys
 **/logs/twitter_rest_producer_log
+**/Data_Ingestor/.ipynb_checkpoints/
