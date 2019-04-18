@@ -32,7 +32,7 @@ class DataProviderService:
         init_database(self.engine)
 
 
-    def add_posting(self, date, job_title, company, city="", technologies="", job_type="", links=""):
+    def add_posting(self, date, job_title, company, city="", technologies="", job_type="", links="", content=""):
         """
         :param date:
         :param job_title:
@@ -41,6 +41,7 @@ class DataProviderService:
         :param technologies:
         :param job_type:
         :param links:
+        :param content:
         :return: The id of the new Posting
         """
         new_posting = Posting(date=date,
@@ -49,7 +50,8 @@ class DataProviderService:
                               city=city,
                               technologies=technologies,
                               job_type=job_type,
-                              links=links)
+                              links=links,
+                              content=content)
         self.session.add(new_posting)
         self.session.commit()
 
@@ -99,7 +101,8 @@ class DataProviderService:
                         city="New York",
                         technologies="Flask, Python",
                         job_type="Full-time",
-                        links="xxx")
+                        links="xxx",
+                        content="Spreemo is hiring data engineer")
 
         post2 = Posting(date=datetime.datetime.today(),
                         job_title="Software Engineer",
@@ -107,7 +110,8 @@ class DataProviderService:
                         city="New York",
                         technologies="Python, SQL",
                         job_type="Full-time",
-                        links="xxx")
+                        links="xxx",
+                        content="Google is hiring data software engineer")
 
         post3 = Posting(date=datetime.datetime.today(),
                         job_title="Data Scientist",
@@ -115,7 +119,8 @@ class DataProviderService:
                         city="New York",
                         technologies="Python, pandas, Spark",
                         job_type="Full-time",
-                        links="xxx")
+                        links="xxx",
+                        content="Palantir is looking for a data scientist")
 
         self.session.add(post1)
         self.session.add(post2)
