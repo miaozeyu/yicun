@@ -16,11 +16,12 @@ class Posting(Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(Date, nullable=False)
     job_title = Column(String(100), nullable=False)
-    company = Column(String(50), nullable=False)
+    company = Column(String(50), nullable=True)
     city = Column(String(50), nullable=True)
-    technologies = Column(String(1000), nullable=True)
+    technologies = Column(String(100), nullable=True)
     job_type = Column(String(20), nullable=True)
     links = Column(String(200), nullable=True)
+    content = Column(String(1000), nullable=False)
 
 
 #
@@ -34,5 +35,6 @@ class Posting(Model):
             "city": self.city,
             "technologies": self.technologies,
             "job_type": self.job_type,
-            "links": self.links
+            "links": self.links,
+            "content": self.content
         }
