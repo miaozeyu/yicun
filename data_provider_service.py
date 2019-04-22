@@ -86,6 +86,7 @@ class DataProviderService:
 
 
         if serialize:
+            print([posting.serialize() for posting in all_postings])
             return [posting.serialize() for posting in all_postings]
         else:
             return all_postings

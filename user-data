@@ -1,0 +1,46 @@
+#!/bin/bash
+sudo yum update -y
+
+sudo yum groupinstall -y 'development tools'
+sudo yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel
+
+wget http://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz
+sudo yum install xz-libs
+xz -d Python-3.6.4.tar.xz
+tar -xvf Python-3.6.4.tar
+
+cd Python-3.6.4
+./configure --prefix=/usr/local --with-ssl
+
+sudo make
+sudo make install
+export PATH="/usr/local/bin:$PATH"
+
+pip3 install virtualenv --user
+
+
+sudo yum install epel-release
+sudo yum install nginx
+sudo service nginx start
+#sudo service nginx restart
+#ifconfig eth0 | grep inet | awk '{ print $2 }'
+
+mkdir hackerjobnow
+cd hackerjobnow
+virtualenv app_venv
+git clone https://github.com/miaozeyu/yicun.git
+mv yicun app
+source app_venv/bin/activate
+pip3 install -r requirements.txt
+
+pip3 install gunicorn
+gunicorn -b 0.0.0.0:8080 wsgi
+gunicorn --log-file error_logs.log
+gunicorn --access-logfile acclogs
+gunicorn --log-level error
+gunicorn --name hackerjobnow_app
+
+sudo nano /etc/nginx/nginx.conf
+
+
+mysql --user miaojoe --password --host hackerjobnow.crvxn06u7o9u.us-west-2.rds.amazonaws.com --port 3306
