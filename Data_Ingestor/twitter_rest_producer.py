@@ -6,6 +6,8 @@ import boto3
 import logging
 from routes import build_message
 
+import sys
+print(sys.path)
 
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
