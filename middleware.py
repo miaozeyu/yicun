@@ -10,7 +10,7 @@ from math import ceil
 
 from data_provider_service import DataProviderService
 
-db_engine = 'mysql+mysqldb://root:@localhost/yicun'
+db_engine = 'mysql+mysqldb://miaojoe:stepcloseR589525!@hackerjobnow.crvxn06u7o9u.us-west-2.rds.amazonaws.com:3306/hackerjobnow'
 
 DATA_PROVIDER = DataProviderService(db_engine)
 
@@ -41,14 +41,16 @@ def posting(serialize=True):
     if serialize:
         data = {"postings": postings, "total": len(postings)}
         response = make_response(jsonify(data), 200)
-
+        print(jsonify(data))
         return response
     else:
+        print(postings)
         return postings
 
 
 def posting_by_id(id):
     current_posting = DATA_PROVIDER.get_posting(id, serialize=True)
+    print(current_posting)
     if current_posting:
         return jsonify({"posting": current_posting})
     else:
