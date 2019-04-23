@@ -3,6 +3,7 @@ from flask import make_response
 from flask import abort
 from flask import request
 from flask import url_for
+from getDBcreds import *
 
 import hashlib
 import json
@@ -10,7 +11,7 @@ from math import ceil
 
 from data_provider_service import DataProviderService
 
-db_engine = 'mysql+mysqldb://miaojoe:stepcloseR589525!@hackerjobnow.crvxn06u7o9u.us-west-2.rds.amazonaws.com:3306/hackerjobnow'
+db_engine = 'mysql+mysqldb://{}:{}@{}:{}/{}'.format(username, password, host, port, database)
 
 DATA_PROVIDER = DataProviderService(db_engine)
 
