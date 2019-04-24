@@ -120,8 +120,6 @@ def makeJobpost(tweet):
 
         if urls:
             jobpost["links"] = ', '.join(urls)
-        print(jobpost)
-        print("------------------------------------------------")
         return jobpost
     else:
         return None
@@ -137,6 +135,8 @@ class TweeterStreamListener(StreamListener):
         tweet = tweetParser(all_data)
         try:
             jobpost = makeJobpost(tweet)
+            print(jobpost)
+            print("------------------------------------------------")
         #             if jobpost:
         #                 sendToFirehose(jobpost)
         except tweepy.TweepError as e:

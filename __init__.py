@@ -14,4 +14,4 @@ if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
 
 
-from royes import tweetParser, sendToFirehose
+from Data_Ingestor.twitter_rest_producer import tweetParser, sendToFirehose
