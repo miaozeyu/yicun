@@ -4,7 +4,7 @@ from flask import abort
 from flask import request
 from flask import url_for
 from getDBcreds import *
-
+from decorators import authenticate
 import hashlib
 import json
 from math import ceil
@@ -18,6 +18,7 @@ DATA_PROVIDER = DataProviderService(db_engine)
 PAGE_SIZE = 2
 
 def posting(serialize=True):
+    #e.g. enter search: api/postings?job_title=data
     job_title = request.args.get("job_title")
     if job_title:
         postings = DATA_PROVIDER.get_posting(serialize=serialize, job_title=job_title)

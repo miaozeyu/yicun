@@ -20,3 +20,14 @@ $(document).ready(function(){
     });
 
 });
+
+
+function initDB() {
+    $.get('/api/initdb');
+};
+
+function fillDB() {
+    $.get('/api/filldb', function(){
+       $("#success_alert").html("Success");
+    });
+};
