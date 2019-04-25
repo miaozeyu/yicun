@@ -3,9 +3,14 @@
 sudo yum update -y
 
 sudo yum groupinstall -y 'development tools'
-sudo yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel
-sudo yum install mysql-server
-sudo yum install mysql-devel
+sudo yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel mysql-server mysql-devel
+
+sudo yum install epel-release
+sudo yum install nginx
+#sudo service nginx start
+#sudo service nginx restart
+#ifconfig eth0 | grep inet | awk '{ print $2 }'
+
 
 wget http://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz
 sudo yum install xz-libs
@@ -19,19 +24,16 @@ sudo make
 sudo make altinstall
 export PATH="/usr/local/bin:$PATH"
 
+echo "alias python3='python3.6'
+alias pip3='pip3.6'" >> ~/.bashrc
+
 pip3 install virtualenv --user
 
 
-sudo yum install epel-release
-sudo yum install nginx
-sudo service nginx start
-#sudo service nginx restart
-#ifconfig eth0 | grep inet | awk '{ print $2 }'
-
 mkdir hackerjobnow
 cd hackerjobnow
-virtualenv -p python3 app_venv
-git clone https://github.com/miaozeyu/yicun.git
+virtualenv -p python3.6 app_venv
+git clone https://github.com/miaozeyu/hackerjobnow.git
 mv yicun app
 source app_venv/bin/activate
 pip3 install -r requirements.txt
