@@ -201,7 +201,7 @@ class HistoricalFlow(DataFlow):
 
         try:
             print("I'm trying to get historical tweets")
-            tweets = tweepy.Cursor(self.api.search, q=query, lang="en", geocode="40.730610,-73.935242,40.0mi").items(100)
+            tweets = tweepy.Cursor(self.api.search, q=query, lang="en", geocode="40.730610,-73.935242,40.0mi").items(50)
 
             for tweet in tweets:
                 tweet = tweetParser(tweet._json)
