@@ -8,31 +8,25 @@ import sys
 
 sys.path.append("../")  # go to parent dir
 
-# In[32]:
-
-
 import tweepy
 from tweepy import OAuthHandler, Stream, StreamListener
 from Data_Ingestor.accessconfig import *
 import json
-import boto3
-import logging
 import re
-import time
-from Data_Ingestor.twitter_rest_producer import tweetParser, sendToFirehose
+from time import sleep
+from Data_Ingestor.twitter_rest_producer import tweetParser
+from random import random
 
 # 1. Create a class inheriting from StreamListener
 # 2. Using that class create a Stream object
 # 3. Connect to the Twitter API using the Stream.
 
-# In[33]:
 
+def retrieve_authentication():
+    auth = OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_secret)
 
-auth = OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_secret)
-
-
-# In[39]:
+    return auth
 
 
 def makeJobpost(tweet):
@@ -130,18 +124,34 @@ def makeJobpost(tweet):
 
 class TweeterStreamListener(StreamListener):
 
+    def __init__(self, socketio):
+        print("TweeterStreamListener is intiated")
+        super().__init__()
+        self.socketio = socketio
+
+    def on_connect(self):
+        print("Successfully connected to the Twitter stream")
+
     def on_data(self, data):
+        number = round(random() * 10, 3)
+        print(number)
+        print("I'm getting tweets")
         all_data = json.loads(data)
         tweet = tweetParser(all_data)
+        print(tweet)
         try:
             jobpost = makeJobpost(tweet)
 
             if jobpost:
-                    data = {"jobpost": jobpost}
-                    response = make_response(jsonify(data), 200)
-                    print(jsonify(data))
-                    return response
-                #sendToFirehose(jobpost)
+                    # data = {"jobpost": jobpost}
+                    # response = make_response(jsonify(data), 200)
+                    # print(jsonify(data))
+                    #return response
+                    #sendToFirehose(jobpost)
+
+                    self.socketio.emit('newtweet', {'tweet': number}, namespace='/test')
+
+
         except tweepy.TweepError as e:
             self.log.error("Error when sending tweet: %s" % e)
 
@@ -150,14 +160,80 @@ class TweeterStreamListener(StreamListener):
         if status_code == 420:
             return False
 
+class UndefinedChildClass(Exception):
+    pass
 
-# In[41]:
 
-def startStreaming():
-# if __name__ == '__main__':
-    runtime = 300  # Tracking for 600  seconds
-    twitterStream = Stream(auth, TweeterStreamListener())
-    twitterStream.filter(languages=["en"], track=['hiring', 'hire', 'looking for', 'job'], async=True)
-    time.sleep(runtime)
-    twitterStream.disconnect()
+class DataFlow():
+
+
+    def __init__(self):
+        print("initiated dataflow")
+        self.auth = retrieve_authentication()
+
+
+    @staticmethod
+    def factory(child):
+        print("factory")
+        if child == 'historical':
+            return HistoricalFlow()
+        if child == 'live':
+            return LiveFlow()
+
+        err = 'The provided child argument (' + child + ') is not supported'
+        raise UndefinedChildClass(err)
+
+
+
+class HistoricalFlow(DataFlow):
+
+
+    def __init__(self):
+        print("initiated historical")
+        super().__init__()
+        self.api = tweepy.API(self.auth, wait_on_rate_limit=True)
+
+
+    def start(self, socketio):
+        query = """-senior -frontend -staff -principal -contract -lead
+                  "data engineer" OR "data scientist" OR "software engineer" OR "software developer" OR "backend engineer" OR "python developer" OR flask
+                  (hiring OR "looking for" OR opening OR job)"""
+
+        try:
+            print("I'm trying to get historical tweets")
+            tweets = tweepy.Cursor(self.api.search, q=query, lang="en", geocode="40.730610,-73.935242,40.0mi").items(100)
+
+            for tweet in tweets:
+                tweet = tweetParser(tweet._json)
+                print(tweet['text'])
+                socketio.emit('newtweet', {'tweet': tweet['text']}, namespace='/test')
+                sleep(2)
+
+
+        except tweepy.TweepError as err:
+                print(err)
+
+
+
+    def stop(self):
+        print('stop')
+
+
+class LiveFlow(DataFlow):
+
+
+    def __init__(self):
+        print("initiated live")
+        super().__init__()
+        self.stream = None
+
+
+    def start(self, socketio):
+        listener = TweeterStreamListener(socketio)
+        self.stream = tweepy.Stream(self.auth, listener)
+        self.stream.filter(languages=["en"])
+
+    def stop(self):
+        self.stream.disconnect()
+
 

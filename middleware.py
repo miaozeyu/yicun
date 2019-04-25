@@ -10,8 +10,8 @@ import json
 from math import ceil
 
 from data_provider_service import DataProviderService
-
-db_engine = 'mysql+mysqldb://{}:{}@{}:{}/{}'.format(username, password, host, port, database)
+#db_engine = 'mysql+mysqldb://{}:{}@{}:{}/{}'.format(username, password, host, port, database)
+db_engine = 'mysql+mysqldb://root:@localhost/yicun'
 
 DATA_PROVIDER = DataProviderService(db_engine)
 

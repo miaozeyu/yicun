@@ -1,13 +1,15 @@
+import sys
+
+sys.path.append("../")  # go to parent dir
+
 import tweepy
 from tweepy import OAuthHandler
-from accessconfig import *
+from Data_Ingestor.accessconfig import *
 import json
 import boto3
 import logging
-from routes import build_message
 
-import sys
-print(sys.path)
+
 
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
@@ -46,7 +48,7 @@ def run():
 
 
 firehose = boto3.client('firehose', region_name='us-east-1')
-LOG_FILENAME = '../logs/stream_producer_log'
+LOG_FILENAME = '../yicun/logs/stream_producer_log'
 logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 
 
@@ -58,7 +60,7 @@ def sendToFirehose(tweet):
                                        })
         logging.info(response)
     except Exception as err:
-        logging.exception(build_message("Error encountered while pushing to Firehose", err))
+        logging.exception({"Error encountered while pushing to Firehose", err})
 
 
 if __name__ == '__main__':

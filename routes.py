@@ -1,15 +1,17 @@
-from flask import jsonify
+from flask import jsonify, render_template
 
 from middleware import initialize_database as init_db
 from middleware import fill_database as fill_db
 from middleware import posting
 from middleware import posting_by_id
+from Data_Ingestor.twitter_streaming_producer import startStreaming
 
 
 def init_api_routes(app):
     if app:
         app.add_url_rule('/api/postings/<string:id>', 'posting_by_id', posting_by_id, methods=['GET'])
         app.add_url_rule('/api/postings', 'posting', posting, methods=['GET'])
+        app.add_url_rule('/api/realtimeposts', 'startStreaming', startStreaming, methods=['GET'])
         app.add_url_rule('/api/initdb', 'initdb', initialize_database)
         app.add_url_rule('/api/filldb', 'filldb', fill_database)
         app.add_url_rule('/api', 'list_routes', list_routes, methods=['GET'], defaults={'app': app})
@@ -48,4 +50,14 @@ def list_routes(app):
         })
     return jsonify({'routes': result, 'total': len(result)})
 
+
+def page_index():
+    print('index.html')
+    # only by sending this page first will the client be connected to the socketio instance
+    return render_template('index.html')
+
+
+def init_website_routes(app):
+    if app:
+        app.add_url_rule('/', 'page_index', page_index, methods=['GET'])
 

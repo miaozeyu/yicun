@@ -1,4 +1,4 @@
-__all__ = ["tweetParser", "sendToFirehose"]
+__all__ = ["tweetParser", "sendToFirehose", "startStreaming", "build_message"]
 
 import os, sys, inspect
 
@@ -15,3 +15,5 @@ if cmd_subfolder not in sys.path:
 
 
 from Data_Ingestor.twitter_rest_producer import tweetParser, sendToFirehose
+from Data_Ingestor.twitter_streaming_producer import startStreaming
+from routes import build_message
