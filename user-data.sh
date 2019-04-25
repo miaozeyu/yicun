@@ -34,16 +34,17 @@ mkdir hackerjobnow
 cd hackerjobnow
 virtualenv -p python3.6 app_venv
 git clone https://github.com/miaozeyu/hackerjobnow.git
-mv yicun app
+mv hackerjobnow app
 source app_venv/bin/activate
-pip3 install -r requirements.txt
+cd app
+pip install -r requirements.txt
 
-pip3 install gunicorn
+pip install gunicorn
 gunicorn app:app -b localhost:8000 &
 nohup gunicorn app:app -b localhost:8000 &
 ps ax|grep gunicorn
 
-pip3 install supervisor
+pip install supervisor
 cd ~
 echo_supervisord_conf > supervisord.conf
 sudo mv supervisord.conf /etc/supervisord.conf
