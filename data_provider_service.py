@@ -53,7 +53,11 @@ class DataProviderService:
                               links=links,
                               content=content)
         self.session.add(new_posting)
-        self.session.commit()
+        try:
+            self.session.commit()
+        except:
+            self.session.rollback()
+            raise
 
         return new_posting.id
 
@@ -126,4 +130,8 @@ class DataProviderService:
         self.session.add(post1)
         self.session.add(post2)
         self.session.add(post3)
-        self.session.commit()
+        try:
+            self.session.commit()
+        except:
+            self.session.rollback()
+            raise
