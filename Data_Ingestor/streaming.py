@@ -195,7 +195,7 @@ class HistoricalFlow(DataFlow):
 
 
     def start(self, socketio):
-        query = """-senior -frontend -staff -principal -contract -lead
+        query = """-hour -senior -frontend -staff -principal -contract -lead 
                   "data engineer" OR "data scientist" OR "software engineer" OR "software developer" OR "backend engineer" OR "python developer" OR flask
                   (hiring OR "looking for" OR opening OR job)"""
         maxTweets = 10000000  # Some arbitrary large number

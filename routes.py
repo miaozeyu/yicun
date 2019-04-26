@@ -11,7 +11,6 @@ def init_api_routes(app):
     if app:
         app.add_url_rule('/api/postings/<string:id>', 'posting_by_id', posting_by_id, methods=['GET'])
         app.add_url_rule('/api/postings', 'posting', posting, methods=['GET'])
-        app.add_url_rule('/api/realtimeposts', 'startStreaming', startStreaming, methods=['GET'])
         app.add_url_rule('/api', 'list_routes', list_routes, methods=['GET'], defaults={'app': app})
         app.add_url_rule('/api/initdb', 'initdb', initialize_database)
         app.add_url_rule('/api/filldb', 'filldb', fill_database)
