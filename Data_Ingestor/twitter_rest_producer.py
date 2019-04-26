@@ -48,7 +48,7 @@ def run():
 
 
 firehose = boto3.client('firehose', region_name='us-east-1')
-LOG_FILENAME = '../app/logs/stream_producer_log'
+LOG_FILENAME = '../hackerjobnow/logs/stream_producer_log'
 logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 
 

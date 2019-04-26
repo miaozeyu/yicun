@@ -7,14 +7,14 @@ $(document).ready(function(){
     //receive details from server
     socket.on('newtweet', function(msg) {
         console.log("Received number" + msg.tweet);
-        //maintain a list of ten numbers
+        //maintain a list of 20 tweets
         if (tweets_received.length >= 20){
             tweets_received.shift()
         }
         tweets_received.push(msg.tweet);
         tweet_string = ''
         for (var i = 0; i < tweets_received.length; i++){
-            tweet_string =  tweet_string + '<p>' + tweets_received[i] + '</p>';
+            tweet_string =  tweet_string + '<p>' + i.toString() + ')' + tweets_received[i] + '</p>';
         }
         $('#log').html(tweet_string);
     });

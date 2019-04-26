@@ -58,13 +58,11 @@ def page_index():
 @authenticate
 def page_initdb(*args, **kwargs):
     print('initdb.html')
-    # only by sending this page first will the client be connected to the socketio instance
     return render_template('initdb.html')
 
 @authenticate
 def page_filldb(*args, **kwargs):
     print('filldb.html')
-    # only by sending this page fiçrst will the client be connected to the socketio instance
     return render_template('filldb.html')
 
 

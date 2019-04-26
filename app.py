@@ -4,7 +4,6 @@ from Data_Ingestor.twitter_streaming_producer import startStreaming
 import sys
 
 sys.path.append("../")  # go to parent dir
-print(sys.path)
 
 
 # Start with a basic flask app webpage.

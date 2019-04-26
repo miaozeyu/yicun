@@ -191,27 +191,30 @@ class HistoricalFlow(DataFlow):
     def __init__(self):
         print("initiated historical")
         super().__init__()
-        self.api = tweepy.API(self.auth, wait_on_rate_limit=True)
+        self.api = tweepy.API(self.auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
 
     def start(self, socketio):
         query = """-senior -frontend -staff -principal -contract -lead
                   "data engineer" OR "data scientist" OR "software engineer" OR "software developer" OR "backend engineer" OR "python developer" OR flask
                   (hiring OR "looking for" OR opening OR job)"""
+        maxTweets = 10000000  # Some arbitrary large number
+        tweetsPerQry = 100  # this is the max the API permits
+        tweetCount = 0
+        while tweetCount < maxTweets:
+            try:
+                print("I'm trying to get historical tweets")
+                tweets = tweepy.Cursor(self.api.search, q=query, lang="en", geocode="40.730610,-73.935242,40.0mi").items(tweetsPerQry)
+                print('newsearch')
+                for tweet in tweets:
+                    tweet = tweetParser(tweet._json)
+                    socketio.emit('newtweet', {'tweet': tweet['text']}, namespace='/test')
+                    sleep(3)
 
-        try:
-            print("I'm trying to get historical tweets")
-            tweets = tweepy.Cursor(self.api.search, q=query, lang="en", geocode="40.730610,-73.935242,40.0mi").items(50)
-
-            for tweet in tweets:
-                tweet = tweetParser(tweet._json)
-                print(tweet['text'])
-                socketio.emit('newtweet', {'tweet': tweet['text']}, namespace='/test')
-                sleep(2)
-
-
-        except tweepy.TweepError as err:
-                print(err)
+                tweetCount += len(tweets)
+                print('currentTotalTweets: {}'.format(tweetCount))
+            except tweepy.TweepError as err:
+                    print(err)
 
 
 

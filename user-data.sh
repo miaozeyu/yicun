@@ -78,5 +78,19 @@ sudo nginx -t
 sudo python3 -m pip uninstall pip && sudo apt install python3-pip --reinstall
 
 
+pm2 start app.py --name hackerjobnow
+pm2 dump
+sudo pm2 startup amazon
 
-
+#TO LIST YOUR APPS:
+pm2 list
+#TO RESTART YOUR APP:
+pm2 start hackerjobnow
+#TO STOP YOUR APP:
+pm2 stop hackerjobnow
+#TO START YOUR APP:
+pm2 start hackerjobnow
+#TO SEE LOGS OF YOUR APP:
+pm2 log hackerjobnow
+#TO DELETE YOUR APP:
+pm2 delete hackerjobnow
